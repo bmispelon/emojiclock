@@ -14,6 +14,7 @@ PAGE_TEMPLATE = """
       body {{
         font-size: 30em;
         font-size: 80vmin;
+        font-family: sans-serif;
         text-align: center;
       }}
     </style>
