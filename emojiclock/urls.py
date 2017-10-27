@@ -16,6 +16,7 @@ PAGE_TEMPLATE = """
         font-size: 80vmin;
         font-family: sans-serif;
         text-align: center;
+        line-height: 100vh;
       }}
     </style>
   </head>
