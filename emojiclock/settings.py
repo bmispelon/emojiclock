@@ -12,21 +12,17 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 
 import os
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ENVIRONMENT = os.getenv('DJANGO_ENVIRONMENT', 'dev').lower()
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'b31v_l+ke!jw+ma@1qznq90lb5j1gyhg^yaxf3y4k1mtqj#w07'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
+if ENVIRONMENT == 'production':
+    DEBUG = False
+    SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
+    ALLOWED_HOSTS = ['emojiclock.herokuapp.com']
+elif ENVIRONMENT == 'dev':
+    DEBUG = True
+    SECRET_KEY = ''
+    ALLOWED_HOSTS = []
 
 # Application definition
 
