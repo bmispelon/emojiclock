@@ -12,15 +12,15 @@ PAGE_TEMPLATE = """
     <meta charset="utf-8">
     <style type="text/css">
       body {{
-        font-size: 30em;
-        font-size: 80vmin;
-        font-family: sans-serif;
+        font-size: 200px;
         text-align: center;
         line-height: 100vh;
       }}
     </style>
+    <title>{clock}</title>
   </head>
-  <body>{}</body>
+  <body>{clock}</body>
+  <!-- Questions, issues? https://github.com/bmispelon/emojiclock -->
 </html>
 """
 
@@ -28,7 +28,7 @@ PAGE_TEMPLATE = """
 def emojiclock(request):
     time = timezone.localtime().time()
     emoji = time_to_emoji(time)
-    return HttpResponse(PAGE_TEMPLATE.format(emoji))
+    return HttpResponse(PAGE_TEMPLATE.format(clock=emoji))
 
 
 urlpatterns = [
