@@ -21,8 +21,8 @@ if ENVIRONMENT == 'production':
     ALLOWED_HOSTS = ['emojiclock.herokuapp.com']
 elif ENVIRONMENT == 'dev':
     DEBUG = True
-    SECRET_KEY = ''
-    ALLOWED_HOSTS = []
+    SECRET_KEY = 'asdf'
+    ALLOWED_HOSTS = ['*']
 
 # Application definition
 
