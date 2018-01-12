@@ -7,8 +7,9 @@ name = "pypi"
 
 [packages]
 
-django = "==2.0b1"
+django = "*"
 gunicorn = "*"
+requests = "*"
 
 
 [dev-packages]
