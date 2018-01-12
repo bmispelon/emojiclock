@@ -19,18 +19,59 @@ if ENVIRONMENT == 'production':
     DEBUG = False
     SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
     ALLOWED_HOSTS = ['emojiclock.herokuapp.com']
+    # settings taken from https://devcenter.heroku.com/articles/django-memcache#configure-django-with-memcachier
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
+            'TIMEOUT': 10 * 24 * 3600,  # 10 days
+            'LOCATION': os.environ['MEMCACHIER_SERVERS'],
+            'OPTIONS': {
+                'binary': True,
+                'username': os.environ['MEMCACHIER_USERNAME'],
+                'password': os.environ['MEMCACHIER_PASSWORD'],
+                'behaviors': {
+                    # Enable faster IO
+                    'no_block': True,
+                    'tcp_nodelay': True,
+                    # Keep connection alive
+                    'tcp_keepalive': True,
+                    # Timeout settings
+                    'connect_timeout': 2000, # ms
+                    'send_timeout': 750 * 1000, # us
+                    'receive_timeout': 750 * 1000, # us
+                    '_poll_timeout': 2000, # ms
+                    # Better failover
+                    'ketama': True,
+                    'remove_failed': 1,
+                    'retry_timeout': 2,
+                    'dead_timeout': 30,
+                }
+            }
+        }
+    }
 elif ENVIRONMENT == 'dev':
     DEBUG = True
     SECRET_KEY = 'asdf'
     ALLOWED_HOSTS = ['*']
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+        }
+    }
 
 # Application definition
 
-INSTALLED_APPS = []
+INSTALLED_APPS = [
+    'django.contrib.sessions',
+]
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'emojiclock.middlewares.timezone_middleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
