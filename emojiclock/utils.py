@@ -1,10 +1,10 @@
 import datetime
 import unicodedata
 
-ENGLISH_NUMBERS = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve']
+ENGLISH_NUMBERS = ['twelve', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven']
 
 _TIME_TO_EMOJI = {}
-for i, number in enumerate(ENGLISH_NUMBERS[1:], 1):
+for i, number in enumerate(ENGLISH_NUMBERS):
     _TIME_TO_EMOJI[datetime.time(hour=i, minute=0)] = unicodedata.lookup('CLOCK FACE {} OCLOCK'.format(number))
     _TIME_TO_EMOJI[datetime.time(hour=i, minute=30)] = unicodedata.lookup('CLOCK FACE {}-THIRTY'.format(number))
 
