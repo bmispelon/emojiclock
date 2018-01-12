@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "8f29a5cc99ea5df3f2898b2331c372a31931d415f3085d74a6bb8a7c3bcd35b0"
+            "sha256": "a71815489d478e1d36972e6161f9833f3de7cffd1c73280294005c67ec73759e"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -17,7 +17,9 @@
             "sys_platform": "linux"
         },
         "pipfile-spec": 6,
-        "requires": {},
+        "requires": {
+            "python_version": "3.6"
+        },
         "sources": [
             {
                 "name": "pypi",
