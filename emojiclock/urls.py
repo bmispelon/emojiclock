@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.urls import path
 from django.utils import timezone
 
@@ -29,7 +29,9 @@ def emojiclock(request):
     time = timezone.localtime().time()
     emoji = time_to_emoji(time)
 
-    if 'html' not in request.META['HTTP_ACCEPT']:
+    if 'json' in request.META['HTTP_ACCEPT']:
+        response = JsonResponse({'time': emoji})
+    elif 'html' not in request.META['HTTP_ACCEPT']:
         response = HttpResponse(emoji, content_type='text/plain; charset=utf-8')
     else:
         response = HttpResponse(PAGE_TEMPLATE.format(clock=emoji))
