@@ -25,7 +25,11 @@ def _get_timezone_name_for_ip(ip):
     logger.info('Uncached timezone query for IP %s', ip)
     response = requests.get(API_ENDPOINT, params=params)
     response.raise_for_status()
-    return response.json()['data']['timezone']['id']
+
+    try:
+        return response.json()['data']['timezone']['id']
+    except (KeyError, TypeError):
+        return None
 
 
 def get_timezone_name_for_ip(ip):
