@@ -28,7 +28,13 @@ PAGE_TEMPLATE = """
 def emojiclock(request):
     time = timezone.localtime().time()
     emoji = time_to_emoji(time)
-    return HttpResponse(PAGE_TEMPLATE.format(clock=emoji))
+
+    if 'html' not in request.META['HTTP_ACCEPT']:
+        response = HttpResponse(emoji, content_type='text/plain; charset=utf-8')
+    else:
+        response = HttpResponse(PAGE_TEMPLATE.format(clock=emoji))
+
+    return response
 
 
 urlpatterns = [
