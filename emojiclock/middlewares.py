@@ -19,14 +19,14 @@ def _get_timezone_name_for_ip(ip):
     if ip in LOCAL_IPS:
         return timezone.get_current_timezone().zone
 
-    URL = 'https://ipsidekick.com/{}'.format(ip)
+    URL = 'https://ipapi.co/{}/json'.format(ip)
 
     logger.info('Uncached timezone query for IP %s', ip)
     response = requests.get(URL)
     response.raise_for_status()
 
     try:
-        return response.json()['data']['timezone']['name']
+        return response.json()['timezone']
     except (KeyError, TypeError):
         return None
 
