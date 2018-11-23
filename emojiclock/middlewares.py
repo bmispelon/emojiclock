@@ -15,19 +15,18 @@ def _get_timezone_name_for_ip(ip):
     given IP address.
     """
     LOCAL_IPS = {'127.0.0.1'}
-    API_ENDPOINT = 'https://timezoneapi.io/api/ip/'
 
     if ip in LOCAL_IPS:
-        params = {}  # This will make timezoneapi return information for our own ip address instead of 127.0.0.1
-    else:
-        params = {'ip': ip}
+        return timezone.get_current_timezone().zone
+
+    URL = 'https://ipsidekick.com/{}'.format(ip)
 
     logger.info('Uncached timezone query for IP %s', ip)
-    response = requests.get(API_ENDPOINT, params=params)
+    response = requests.get(URL)
     response.raise_for_status()
 
     try:
-        return response.json()['data']['timezone']['id']
+        return response.json()['data']['timezone']['name']
     except (KeyError, TypeError):
         return None
 
