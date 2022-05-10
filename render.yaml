@@ -4,6 +4,7 @@ services:
     name: emojiclock-cache
     region: frankfurt
     plan: free
+    ipAllowList: [] # only allow internal connections
 
   - type: web
     name: emojiclock
