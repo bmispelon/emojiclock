@@ -1,9 +1,10 @@
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseServerError, JsonResponse
+from django.http import (
+    HttpResponse, HttpResponseNotFound, HttpResponseServerError, JsonResponse,
+)
 from django.urls import path
 from django.utils import timezone
 
 from .utils import time_to_emoji
-
 
 FULL_PAGE_EMOJI_TEMPLATE = """
 <!DOCTYPE html>

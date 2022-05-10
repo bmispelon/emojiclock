@@ -1,13 +1,12 @@
-from datetime import time
 import unicodedata
-
-from django.test import override_settings, SimpleTestCase
+from datetime import time
 
 import requests
 import responses
+from django.test import SimpleTestCase, override_settings
 
 from emojiclock.ip_to_timezone import ip_to_timezone, logger
-from emojiclock.utils import time_to_emoji, emoji_to_time
+from emojiclock.utils import emoji_to_time, time_to_emoji
 
 
 class IPToTimezoneTestCase(SimpleTestCase):
