@@ -2,7 +2,6 @@ from functools import partial
 
 from django.core.cache import cache as default_cache
 from django.utils import timezone
-
 from ipware import get_client_ip
 
 from emojiclock.ip_to_timezone import ip_to_timezone
