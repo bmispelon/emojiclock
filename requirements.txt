@@ -18,6 +18,8 @@ django==4.0.4
     # via -r requirements.in
 django-cache-url==3.4.0
     # via environs
+django-ipware==4.0.2
+    # via -r requirements.in
 environs[django]==9.5.0
     # via -r requirements.in
 gunicorn==20.1.0
