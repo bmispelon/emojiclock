@@ -3,7 +3,20 @@ import unicodedata
 
 
 # everybody knows that counting starts from twelve
-ENGLISH_NUMBERS = ['twelve', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven']
+ENGLISH_NUMBERS = [
+    'twelve',
+    'one',
+    'two',
+    'three',
+    'four',
+    'five',
+    'six',
+    'seven',
+    'eight',
+    'nine',
+    'ten',
+    'eleven'
+]
 
 _TIME_TO_EMOJI = {
     datetime.time(hour, minute): unicodedata.lookup(f'CLOCK FACE {english}{suffix}')

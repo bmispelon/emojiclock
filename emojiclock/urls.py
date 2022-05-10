@@ -25,7 +25,6 @@ FULL_PAGE_EMOJI_TEMPLATE = """
 """
 
 
-
 def _emojiresponse(emoji, response_class=HttpResponse):
     body = FULL_PAGE_EMOJI_TEMPLATE.format(emoji=emoji)
     return response_class(body)

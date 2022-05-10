@@ -46,7 +46,10 @@ class IPToTimezoneTestCase(SimpleTestCase):
         with self.assertLogs(logger, level='ERROR') as logged:
             tz = ip_to_timezone('192.0.2.0')
         self.assertEqual(len(logged.output), 1)
-        self.assertRegex(logged.output[0], f'^ERROR:{logger.name}:Response doesn\'t appear to be valid JSON')
+        self.assertRegex(
+            logged.output[0],
+            f'^ERROR:{logger.name}:Response doesn\'t appear to be valid JSON'
+        )
         self.assertEqual(tz, None)
 
     @responses.activate
@@ -55,7 +58,10 @@ class IPToTimezoneTestCase(SimpleTestCase):
         with self.assertLogs(logger, level='ERROR') as logged:
             tz = ip_to_timezone('192.0.2.0')
         self.assertEqual(len(logged.output), 1)
-        self.assertRegex(logged.output[0], f'^ERROR:{logger.name}:Response JSON content has an unexpected structure')
+        self.assertRegex(
+            logged.output[0],
+            f'^ERROR:{logger.name}:Response JSON content has an unexpected structure'
+        )
         self.assertEqual(tz, None)
 
 
