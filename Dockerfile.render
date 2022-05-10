@@ -1,0 +1,24 @@
+FROM python:3.10
+
+RUN apt-get update && apt-get install -y \
+    python3-pip \
+    python3-venv \
+    python3-dev \
+    python3-setuptools \
+    python3-wheel
+
+RUN mkdir -p /app
+WORKDIR /app
+
+COPY requirements.txt .
+RUN python -m pip install --upgrade pip
+RUN python -m pip install -r requirements.txt
+
+COPY . .
+
+ENV DJANGO_DEBUG=FALSE
+ENV DJANGO_ALLOWED_HOSTS=emojiti.me,emojiclock.onrender.com
+ENV DJANGO_SECURE_PROXY_SSL_HEADER="HTTP_X_FORWARDED_PROTO=https"
+ENV WEB_CONCURRENCY=4
+
+CMD ["gunicorn", "emojiclock.wsgi"]

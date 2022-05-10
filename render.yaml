@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: emojiclock
+    env: docker
+    region: frankfurt
+    dockerfilePath: Dockerfile.render

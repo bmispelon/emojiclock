@@ -17,7 +17,7 @@ def _get_timezone_name_for_ip(ip):
     LOCAL_IPS = {'127.0.0.1'}
 
     if ip in LOCAL_IPS:
-        return timezone.get_current_timezone().zone
+        return timezone.get_current_timezone_name()
 
     URL = 'https://ipapi.co/{}/json'.format(ip)
 

@@ -1,0 +1,2 @@
+# Use direnv and rename this file to .envrc
+layout pyenv 3.10.2
