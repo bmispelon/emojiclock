@@ -1,12 +1,15 @@
 import datetime
 import unicodedata
 
+
+# everybody knows that counting starts from twelve
 ENGLISH_NUMBERS = ['twelve', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven']
 
-_TIME_TO_EMOJI = {}
-for i, number in enumerate(ENGLISH_NUMBERS):
-    _TIME_TO_EMOJI[datetime.time(hour=i, minute=0)] = unicodedata.lookup('CLOCK FACE {} OCLOCK'.format(number))
-    _TIME_TO_EMOJI[datetime.time(hour=i, minute=30)] = unicodedata.lookup('CLOCK FACE {}-THIRTY'.format(number))
+_TIME_TO_EMOJI = {
+    datetime.time(hour, minute): unicodedata.lookup(f'CLOCK FACE {english}{suffix}')
+    for hour, english in enumerate(ENGLISH_NUMBERS)
+    for minute, suffix in [(0, ' OCLOCK'), (30, '-THIRTY')]
+}
 
 
 _EMOJI_TO_TIME = {v: k for k, v in _TIME_TO_EMOJI.items()}
@@ -27,7 +30,7 @@ def round_to_nearest_half_hour(time):
     total_half_hour_blocks = round(total_seconds/(30*60))
 
     return datetime.time(
-        hour=total_half_hour_blocks // 2,
+        hour=(total_half_hour_blocks // 2) % 12,
         minute=30 * (total_half_hour_blocks % 2)
     )
 
