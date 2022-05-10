@@ -3,6 +3,8 @@ from functools import partial
 from django.core.cache import cache as default_cache
 from django.utils import timezone
 
+from ipware import get_client_ip
+
 from emojiclock.ip_to_timezone import ip_to_timezone
 
 
@@ -15,23 +17,8 @@ def get_timezone_name_for_ip(ip):
     return default_cache.get_or_set(f'django-ip-tz-{ip}', partial(ip_to_timezone, ip))
 
 
-def get_client_ip(request):
-    """
-    Return the IP address of the client for the given request.
-
-    If the IP address can't be found, return None.
-    """
-    if 'HTTP_X_FORWARDED_FOR' in request.META:  # For Heroku
-        return request.META['HTTP_X_FORWARDED_FOR'].split(',')[0]
-
-    if 'REMOTE_ADDR' in request.META:
-        return request.META['REMOTE_ADDR']
-
-    return None
-
-
 def get_user_timezone(request):
-    ip_address = get_client_ip(request)
+    ip_address, _ = get_client_ip(request)
     if ip_address is not None:
         return get_timezone_name_for_ip(ip_address)
 
