@@ -1,4 +1,5 @@
-from unittest import mock
+from datetime import time
+import unicodedata
 
 from django.test import override_settings, SimpleTestCase
 
@@ -6,6 +7,7 @@ import requests
 import responses
 
 from emojiclock.ip_to_timezone import ip_to_timezone, logger
+from emojiclock.utils import time_to_emoji, emoji_to_time
 
 
 class IPToTimezoneTestCase(SimpleTestCase):
@@ -55,3 +57,34 @@ class IPToTimezoneTestCase(SimpleTestCase):
         self.assertEqual(len(logged.output), 1)
         self.assertRegex(logged.output[0], f'^ERROR:{logger.name}:Response JSON content has an unexpected structure')
         self.assertEqual(tz, None)
+
+
+class EmojiTestCase(SimpleTestCase):
+    def test_time_to_emoji(self):
+        testdata = [
+            (time(1), '\N{CLOCK FACE ONE OCLOCK}'),
+            (time(1, 30), '\N{CLOCK FACE ONE-THIRTY}'),
+            (time(13), '\N{CLOCK FACE ONE OCLOCK}'),
+            (time(1, 14), '\N{CLOCK FACE ONE OCLOCK}'),
+            (time(1, 15), '\N{CLOCK FACE ONE OCLOCK}'),
+            (time(1, 15, 1), '\N{CLOCK FACE ONE-THIRTY}'),
+            (time(1, 15, microsecond=1), '\N{CLOCK FACE ONE-THIRTY}'),
+            (time(1, 16), '\N{CLOCK FACE ONE-THIRTY}'),
+            (time(0), '\N{CLOCK FACE TWELVE OCLOCK}'),
+            (time(12), '\N{CLOCK FACE TWELVE OCLOCK}'),
+            (time(11, 59), '\N{CLOCK FACE TWELVE OCLOCK}'),
+        ]
+        for t, expected in testdata:
+            with self.subTest(time=t):
+                self.assertEqual(time_to_emoji(t), expected)
+
+    def test_emoji_to_time(self):
+        testdata = [
+            ('\N{CLOCK FACE ONE OCLOCK}', time(1)),
+            ('\N{CLOCK FACE ONE-THIRTY}', time(1, 30)),
+            ('\N{CLOCK FACE TWELVE OCLOCK}', time(0)),
+            ('\N{CLOCK FACE TWELVE-THIRTY}', time(0, 30)),
+        ]
+        for emoji, expected in testdata:
+            with self.subTest(emoji=f'\\N{{{unicodedata.name(emoji)}}}'):
+                self.assertEqual(emoji_to_time(emoji), expected)
