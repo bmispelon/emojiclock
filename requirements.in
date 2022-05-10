@@ -1,0 +1,4 @@
+Django==4.0.*
+gunicorn
+requests
+environs[django]
