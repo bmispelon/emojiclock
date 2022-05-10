@@ -1,34 +1,9 @@
+from functools import partial
+
 from django.core.cache import cache as default_cache
 from django.utils import timezone
 
-from functools import partial
-import logging
-
-import requests
-
-logger = logging.getLogger(__name__)
-
-
-def _get_timezone_name_for_ip(ip):
-    """
-    Query an external API to get the name of the timezone corresponding to the
-    given IP address.
-    """
-    LOCAL_IPS = {'127.0.0.1'}
-
-    if ip in LOCAL_IPS:
-        return timezone.get_current_timezone_name()
-
-    URL = 'https://ipapi.co/{}/json'.format(ip)
-
-    logger.info('Uncached timezone query for IP %s', ip)
-    response = requests.get(URL)
-    response.raise_for_status()
-
-    try:
-        return response.json()['timezone']
-    except (KeyError, TypeError):
-        return None
+from emojiclock.ip_to_timezone import ip_to_timezone
 
 
 def get_timezone_name_for_ip(ip):
@@ -37,8 +12,7 @@ def get_timezone_name_for_ip(ip):
 
     Results are cached.
     """
-    cachekey = 'django-ip-tz-{}'.format(ip)
-    return default_cache.get_or_set(cachekey, partial(_get_timezone_name_for_ip, ip))
+    return default_cache.get_or_set(f'django-ip-tz-{ip}', partial(ip_to_timezone, ip))
 
 
 def get_client_ip(request):
@@ -62,7 +36,6 @@ def get_user_timezone(request):
         return get_timezone_name_for_ip(ip_address)
 
     return None
-
 
 def timezone_middleware(get_response):
     """
