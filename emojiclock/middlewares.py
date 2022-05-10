@@ -24,6 +24,7 @@ def get_user_timezone(request):
 
     return None
 
+
 def timezone_middleware(get_response):
     """
     Store the user's timezone (based on IP address) in the session and activate

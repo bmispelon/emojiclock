@@ -2,6 +2,7 @@ from environs import Env
 
 env = Env()
 
+
 @env.parser_for('secure_ssl_header')
 def _(value):
     if not value:
