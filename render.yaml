@@ -1,6 +1,18 @@
 services:
+
+  - type: redis
+    name: emojiclock-cache
+    region: frankfurt
+    plan: free
+
   - type: web
     name: emojiclock
     env: docker
     region: frankfurt
     dockerfilePath: Dockerfile.render
+    envVars:
+      - key: DJANGO_CACHE_URL
+        fromService:
+          type: redis
+          name: emojiclock-cache
+          property: connectionString
