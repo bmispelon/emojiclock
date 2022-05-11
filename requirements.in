@@ -3,3 +3,4 @@ gunicorn
 requests
 environs[django]
 django-ipware
+redis
