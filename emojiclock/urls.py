@@ -23,7 +23,7 @@ FULL_PAGE_EMOJI_TEMPLATE = """
   <body>{emoji}</body>
   <!-- Questions, issues? https://github.com/bmispelon/emojiclock -->
 </html>
-"""
+""".strip()
 
 
 def _emojiresponse(emoji, response_class=HttpResponse):
