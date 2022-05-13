@@ -1,3 +1,5 @@
 -c requirements.txt
 responses
 pre-commit
+time-machine
+lxml

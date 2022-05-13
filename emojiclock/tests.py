@@ -1,8 +1,12 @@
+import cgi
 import unicodedata
 from datetime import time
+from http import HTTPStatus
 
+import lxml.html
 import requests
 import responses
+import time_machine
 from django.test import SimpleTestCase, override_settings
 
 from emojiclock.ip_to_timezone import ip_to_timezone, logger
@@ -93,3 +97,59 @@ class EmojiTestCase(SimpleTestCase):
         for emoji, expected in testdata:
             with self.subTest(emoji=f'\\N{{{unicodedata.name(emoji)}}}'):
                 self.assertEqual(emoji_to_time(emoji), expected)
+
+
+class ViewsTestCase(SimpleTestCase):
+    def _assertResponseContentType(self, response, contenttype, status_code=HTTPStatus.OK):
+        if status_code is not None:
+            self.assertEqual(response.status_code, status_code)
+        if contenttype is None:
+            self.assertNotIn('Content-Type', response)
+        else:
+            self.assertIn('Content-Type', response)
+            ct, _ = cgi.parse_header(response['Content-Type'])
+            self.assertEqual(ct, contenttype)
+
+    def test_response_content_types(self):
+        testdata = [
+            ('text/html', 'text/html'),
+            ('text/plain', 'text/plain'),
+            ('application/json', 'application/json'),
+            ('*/*', 'text/html'),
+        ]
+        for client_accept, expected_response_contenttype in testdata:
+            with self.subTest(contenttype=client_accept):
+                response = self.client.get('/', HTTP_ACCEPT=client_accept)
+                self._assertResponseContentType(response, expected_response_contenttype)
+
+    def test_unsupported_content_type(self):
+        response = self.client.get('/', HTTP_ACCEPT='video/mp4')
+        self.assertEqual(response.status_code, HTTPStatus.NOT_ACCEPTABLE)
+
+    @time_machine.travel('2000-01-01 01:30')
+    def test_output_json(self):
+        response = self.client.get('/', HTTP_ACCEPT='application/json')
+        self.assertEqual(response.json(), {'time': '\N{CLOCK FACE ONE-THIRTY}'})
+
+    @time_machine.travel('2000-01-01 01:30')
+    def test_output_plaintext(self):
+        response = self.client.get('/', HTTP_ACCEPT='text/plain')
+        self.assertEqual(response.content, '\N{CLOCK FACE ONE-THIRTY}'.encode('utf8'))
+
+    @time_machine.travel('2000-01-01 01:30')
+    def test_output_html(self):
+        response = self.client.get('/', HTTP_ACCEPT='text/html')
+        tree = lxml.html.fromstring(response.content)
+        self.assertEqual(tree.find('body').text, '\N{CLOCK FACE ONE-THIRTY}')
+
+    @time_machine.travel('2000-01-01 01:30')
+    def test_output_html_title(self):
+        response = self.client.get('/', HTTP_ACCEPT='text/html')
+        tree = lxml.html.fromstring(response.content)
+        self.assertEqual(tree.find('head').find('title').text, '\N{CLOCK FACE ONE-THIRTY}')
+
+    def test_html_is_trimmed(self):
+        response = self.client.get('/', HTTP_ACCEPT='text/html')
+        content = response.content.decode(response.charset)
+        self.assertFalse(content[0].isspace())
+        self.assertFalse(content[-1].isspace())
