@@ -17,7 +17,7 @@ RUN python -m pip install -r requirements.txt
 COPY . .
 
 ENV DJANGO_DEBUG=FALSE
-ENV DJANGO_ALLOWED_HOSTS=emojiti.me,emojiclock.onrender.com
+ENV DJANGO_ALLOWED_HOSTS="time.bmispelon.rocks,emojiclock.onrender.com"
 ENV DJANGO_SECURE_PROXY_SSL_HEADER="HTTP_X_FORWARDED_PROTO=https"
 ENV WEB_CONCURRENCY=4
 
