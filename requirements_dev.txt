@@ -40,7 +40,7 @@ requests==2.27.1
     # via
     #   -c requirements.txt
     #   responses
-responses==0.20.0
+responses==0.21.0
     # via -r requirements_dev.in
 six==1.16.0
     # via
