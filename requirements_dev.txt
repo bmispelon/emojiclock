@@ -46,7 +46,7 @@ six==1.16.0
     # via
     #   python-dateutil
     #   virtualenv
-time-machine==2.7.0
+time-machine==2.7.1
     # via -r requirements_dev.in
 toml==0.10.2
     # via pre-commit
