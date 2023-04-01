@@ -35,12 +35,14 @@ pre-commit==2.19.0
 python-dateutil==2.8.2
     # via time-machine
 pyyaml==6.0
-    # via pre-commit
+    # via
+    #   pre-commit
+    #   responses
 requests==2.27.1
     # via
     #   -c requirements.txt
     #   responses
-responses==0.20.0
+responses==0.23.1
     # via -r requirements_dev.in
 six==1.16.0
     # via
@@ -50,6 +52,8 @@ time-machine==2.7.0
     # via -r requirements_dev.in
 toml==0.10.2
     # via pre-commit
+types-pyyaml==6.0.12.9
+    # via responses
 urllib3==1.26.9
     # via
     #   -c requirements.txt
