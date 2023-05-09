@@ -4,7 +4,7 @@
 #
 #    pip-compile requirements.in
 #
-asgiref==3.5.1
+asgiref==3.6.0
     # via django
 async-timeout==4.0.2
     # via redis
@@ -18,7 +18,7 @@ dj-database-url==0.5.0
     # via environs
 dj-email-url==1.0.5
     # via environs
-django==4.0.4
+django==4.1.9
     # via -r requirements.in
 django-cache-url==3.4.0
     # via environs
